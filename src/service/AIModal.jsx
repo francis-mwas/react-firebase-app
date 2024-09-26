@@ -4,11 +4,7 @@
  * $ npm install @google/generative-ai
  */
 
-import {
-  GoogleGenerativeAI,
-  HarmCategory,
-  HarmBlockThreshold,
-} from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const apiKey = import.meta.env.VITE_GOOGLE_GEMINI_AI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
@@ -32,7 +28,7 @@ export const chatSession = model.startChat({
       role: 'user',
       parts: [
         {
-          text: 'Generate Travel Plan for Location: Vatican, for 3 days for Couple with a Cheap budget, Give me Hotels options list with HotelName, Hotel Address, Price, hotel image url, geo coordinates, descriptions, and suggest itinerary with placeName, Place, details, Place image Url, Geo Coordinates, ticket pricing, rating, Time to travel each of the location for 3 days with each day plan with time to visit in JSON Format.',
+          text: 'Generate Travel Plan for Location: Vatican, for 3 days for Couple with a Cheap budget, Give me Hotels options list with HotelName, Hotel Address, Price, hotel image url, geo coordinates, descriptions, and suggest itinerary with placeName, Place, details, Place image Url, Geo Coordinates, ticket pricing, rating, Time to travel each of the location for 3 days with each day plan with time to visit in JSON Format. include hotel ratings',
         },
       ],
     },

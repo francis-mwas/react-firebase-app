@@ -23,12 +23,15 @@ import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/service/firebaseConfig';
+import { useNavigate } from 'react-router-dom';
+import JSON5 from 'json5';
 
 const CreateTrip = () => {
   const [place, setPlace] = useState();
   const [formData, setFormData] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (name, value) => {
     setFormData({
@@ -90,26 +93,36 @@ const CreateTrip = () => {
       .replace('{budgetType}', formData?.budget)
       .replace('{totalDays}', formData?.noOfDays);
     const AIResponse = await chatSession.sendMessage(FINAL_PROMPT);
-    console.log('The AI Response: ', AIResponse?.response?.text());
+    console.log(
+      'The AI Response: ',
+      JSON5.parse(JSON5.stringify(AIResponse?.response?.text()).trim())
+    );
     //disable loading state
     setLoading(false);
     saveTripData(AIResponse?.response?.text());
   };
 
   const saveTripData = async (aiTripData) => {
-    //show the loading state
-    setLoading(true);
-    const documentId = Date.now().toString();
-    const getUser = JSON.parse(localStorage.getItem('tourUser'));
-    // Add a new document in collection "tripData"
-    await setDoc(doc(db, 'tours', documentId), {
-      userSelection: formData,
-      tripInformation: JSON.parse(aiTripData),
-      userEmail: getUser?.email,
-      id: documentId,
-    });
-    //disable loading state
-    setLoading(false);
+    try {
+      //show the loading state
+      setLoading(true);
+      const documentId = Date.now().toString();
+      const getUser = JSON5.parse(localStorage.getItem('tourUser'));
+      console.log('aiTripData', aiTripData);
+
+      // Add a new document in collection "tripData"
+      await setDoc(doc(db, 'tours', documentId), {
+        userSelection: formData,
+        tripInformation: JSON5.parse(aiTripData),
+        userEmail: getUser?.email,
+        id: documentId,
+      });
+      //disable loading state
+      setLoading(false);
+      navigate(`/view-trip/${documentId}`);
+    } catch (error) {
+      console.log('An error occurred when trying to parse the data: ', error);
+    }
   };
 
   return (
