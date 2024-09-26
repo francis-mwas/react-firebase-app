@@ -1,26 +1,32 @@
 import { Button } from '@/components/ui/button';
 import { fetchPlaces } from '@/service/GlobalApi';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FaShareAlt } from 'react-icons/fa';
+import { PHOTO_REF_URL } from '@/service/GlobalApi';
 
 const InforSection = ({ trip }) => {
+  const [photoUrl, setPhotoUrl] = useState('');
   useEffect(() => {
-    trip && fetchPlaces();
+    trip && getPlacesPhotos();
   }, [trip]);
-    const requestBody = {
-      textQuery: 'restaurants in Mombasa',
-      languageCode: 'en', // Optional, can specify 'en', 'fr', etc.
-    };
+  const requestBody = {
+    textQuery: trip?.userSelection?.location?.label,
+    languageCode: 'en', // Optional, can specify 'en', 'fr', etc.
+  };
   const getPlacesPhotos = async () => {
-    await getPlaceDetails(data).then((resp) => {
-      console.log('The response: ', resp.data);
-    });
-    console.log('dhkfhkffjkf:', getPlacesPhotos);
+    const results = await fetchPlaces(requestBody);
+    console.log('The results are here: ', results?.places[0]?.photos[3]?.name);
+    const photoUrlRef = PHOTO_REF_URL.replace(
+      '{NAME}',
+      results?.places[0]?.photos[3]?.name
+    );
+    setPhotoUrl(photoUrlRef);
+    console.log('photoUrl', photoUrlRef);
   };
   return (
     <div>
       <img
-        src="/placeholder.jpg"
+        src={photoUrl ? photoUrl : '/placeholder.jpg'}
         className="h-[340px] w-full object-cover rounded-xl"
       />
       <div className="my-5 flex flex-col gap-2">

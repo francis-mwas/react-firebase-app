@@ -1,4 +1,4 @@
-import Plan from './Plan';
+import Plan from './PlanCardItem';
 
 const Itinerary = ({ trip }) => {
   const itinerary = trip?.tripInformation?.itinerary;

@@ -48,6 +48,6 @@ export async function fetchPlaces(requestBody) {
     console.error('Error fetching places:', error);
   }
 }
-
-// Invoke the function
-// fetchPlaces();
+export const PHOTO_REF_URL =
+  'https://places.googleapis.com/v1/{NAME}/media?maxHeightPx=1400&maxWidthPx=1400&key=' +
+  import.meta.env.VITE_GOOGLE_PLACE_API;
