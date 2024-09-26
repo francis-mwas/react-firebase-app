@@ -16,12 +16,17 @@ const Itinerary = ({ trip }) => {
         {itinerary &&
           Object.keys(itinerary).map((dayKey) => (
             <div key={dayKey}>
-              <h2>{dayKey}</h2>
-              <div className="my-4">
-                <h3 className="text-orange-500">
-                  {itinerary && itinerary[dayKey]?.bestTime}
-                </h3>
-                <Plan plan={itinerary && itinerary[dayKey]?.plan} />
+              <h2 className="font-medium">{dayKey}</h2>
+              <div className="grid md:grid-cols-2 gap-5">
+                {itinerary &&
+                  itinerary[dayKey]?.map((place, index) => (
+                    <div className="" key={index}>
+                      <h2 className="font-medium text-sm text-orange-500">
+                        {place?.timeToTravel}
+                      </h2>
+                      <Plan plan={place} />
+                    </div>
+                  ))}
               </div>
             </div>
           ))}
@@ -29,5 +34,8 @@ const Itinerary = ({ trip }) => {
     </div>
   );
 };
+//    {
+//      itinerary && itinerary[dayKey]?.bestTime;
+//    }
 
 export default Itinerary;

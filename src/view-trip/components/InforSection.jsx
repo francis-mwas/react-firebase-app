@@ -1,7 +1,22 @@
 import { Button } from '@/components/ui/button';
+import { fetchPlaces } from '@/service/GlobalApi';
+import { useEffect } from 'react';
 import { FaShareAlt } from 'react-icons/fa';
 
 const InforSection = ({ trip }) => {
+  useEffect(() => {
+    trip && fetchPlaces();
+  }, [trip]);
+    const requestBody = {
+      textQuery: 'restaurants in Mombasa',
+      languageCode: 'en', // Optional, can specify 'en', 'fr', etc.
+    };
+  const getPlacesPhotos = async () => {
+    await getPlaceDetails(data).then((resp) => {
+      console.log('The response: ', resp.data);
+    });
+    console.log('dhkfhkffjkf:', getPlacesPhotos);
+  };
   return (
     <div>
       <img
